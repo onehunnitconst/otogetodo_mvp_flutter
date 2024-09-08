@@ -6,6 +6,7 @@ class Todo {
   final String game;
   final Song song;
   final Chart chart;
+  final String goal;
   final bool completed;
 
   Todo({
@@ -13,6 +14,7 @@ class Todo {
     required this.game,
     required this.song,
     required this.chart,
+    required this.goal,
     required this.completed,
   });
 }

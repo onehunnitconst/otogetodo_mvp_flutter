@@ -3,6 +3,7 @@ import 'package:otogetodo_mvp/model/domain/charts/chart.dart';
 import 'package:otogetodo_mvp/model/domain/songs/song.dart';
 import 'package:otogetodo_mvp/model/domain/todos/todo.dart';
 import 'package:otogetodo_mvp/util/extensions/widget_list_extension.dart';
+import 'package:otogetodo_mvp/view/todo/widgets/todo_group.dart';
 import 'package:otogetodo_mvp/view/todo/widgets/todo_item.dart';
 
 class TodoView extends StatefulWidget {
@@ -37,102 +38,169 @@ class _TodoViewState extends State<TodoView> with TickerProviderStateMixin {
 
     final todos = [
       Todo(
-        id: '8fb753a0-c497-4e51-9f83-52f492f99296',
+        id: 'todo-1',
         game: 'maimai',
         song: Song(
-          title: 'Oshama Scramble!',
-          artist: 't+pazolite',
+          cover: 'https://i.ytimg.com/vi/_Pa0FFARajk/maxresdefault.jpg',
+          title: 'Technicians High',
+          artist: 'HiTECH NINJA',
         ),
         chart: Chart(
-          mode: 'deluxe',
-          difficulty: 'Re:MASTER',
+          mode: 'DX',
+          difficulty: 'MASTER',
           level: '13',
         ),
+        goal: '랭크 SSS+ 달성',
         completed: false,
       ),
       Todo(
-        id: '2c3ff6c4-90f6-45ec-b0d0-7ff93a439ca9',
-        game: 'iidx',
+        id: 'todo-2',
+        game: 'maimai',
         song: Song(
-          title: 'EMERALDAS',
-          artist: 'BEMANI Sound Team "HuΣeR vs dj Hellix"',
+          cover:
+              'https://silentblue.remywiki.com/images/thumb/d/d8/Rooftop_Run_Act1.png/300px-Rooftop_Run_Act1.png',
+          title: 'Rooftop Run: Act1',
+          artist: 'Tomoya Ohtani',
         ),
         chart: Chart(
-          mode: 'standard',
+          mode: 'STD',
           difficulty: 'Re:MASTER',
           level: '13',
         ),
+        goal: '풀콤보 달성',
+        completed: false,
+      ),
+      Todo(
+        id: 'todo-3',
+        game: 'popn',
+        song: Song(
+          cover:
+              'https://remywiki.com/images/0/03/Snow_prism.png?20180826223840',
+          title: 'Snow Prism',
+          artist: 'Qrispy Joybox',
+        ),
+        chart: Chart(
+          difficulty: 'EX',
+          level: '45',
+        ),
+        goal: '98000점 이상 달성',
+        completed: false,
+      ),
+      Todo(
+        id: 'todo-4',
+        game: 'popn',
+        song: Song(
+          cover:
+              'https://remywiki.com/images/a/a5/LT_L-an%21ma.png?20160605222031',
+          title: 'L-an!ma',
+          artist: 'Master of Lapis',
+        ),
+        chart: Chart(
+          difficulty: 'EX',
+          level: '50',
+        ),
+        goal: '클리어 달성',
+        completed: false,
+      ),
+      Todo(
+        id: 'todo-5',
+        game: 'maimai',
+        song: Song(
+          cover:
+              'https://silentblue.remywiki.com/images/thumb/c/c8/SOS.png/300px-SOS.png',
+          title: 'エスオーエス',
+          artist: 'Nanahoshi kangengakudan',
+        ),
+        chart: Chart(
+          mode: 'DX',
+          difficulty: 'MASTER',
+          level: '13+',
+        ),
+        goal: '랭크 SSS+ 달성',
         completed: false,
       ),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Text('OTOGETODO', style: typography.black.headlineMedium!),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          onTap: setIndex,
-          tabs: [
-            Tab(
-              child: Text('미완료'),
-            ),
-            Tab(
-              child: Text('완료'),
-            ),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          title: Text('OTOGETODO', style: typography.black.headlineMedium!),
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
           ],
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                vertical: 20.0,
-                horizontal: 22.0,
+          bottom: TabBar(
+            controller: _tabController,
+            onTap: setIndex,
+            tabs: [
+              Tab(
+                child: Text('미완료'),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Tab(
+                child: Text('완료'),
+              ),
+            ],
+          ),
+        ),
+        body: SafeArea(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              Column(
                 children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20.0,
+                        horizontal: 22.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...todos
+                              .map((todo) => TodoItem(todo: todo))
+                              .toList()
+                              .spacing(6.0),
+                        ],
+                      ),
+                    ),
+                  ),
                   Container(
-                    width: mediaQuery.size.width,
-                    padding: const EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: colorScheme.secondary,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 22.0,
                     ),
                     child: Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            '기본 그룹',
-                            style: typography.dense.bodyLarge!,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: Colors.black12,
+                            ),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            ),
                           ),
                         ),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: colorScheme.background,
-                        ),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.add)),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10.0),
-                  ...todos
-                      .map((todo) => TodoItem(todo: todo))
-                      .toList()
-                      .spacing(6.0),
                 ],
               ),
-            ),
-          ],
+              Container(),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
       ),
     );
   }
